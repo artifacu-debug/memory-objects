@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Projector Output</title>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+    <style>
+        body { margin: 0; background: black; overflow: hidden; display: flex; justify-content: center; align-items: center; height: 100vh; color: white; font-family: sans-serif;}
+        video { width: 100%; height: 100%; object-fit: contain; display: none; }
+        #startBtn { padding: 20px 40px; font-size: 24px; cursor: pointer; }
+    </style>
+</head>
+<body>
+
+    <button id="startBtn">Start Projector Mode</button>
+    <video id="myVideo" controls></video>
+
+    <script>
+        // Same FireBase configuration that I had for the reader
+        const firebaseConfig = {
+            apiKey: "YOUR_API_KEY",
+            authDomain: "YOUR_PROJECT.firebaseapp.com",
+            databaseURL: "https://YOUR_PROJECT-default-rtdb.firebaseio.com",
+            projectId: "YOUR_PROJECT"
+        };
+        firebase.initializeApp(firebaseConfig);
+        const database = firebase.database();
+
+        const startBtn = document.getElementById('startBtn');
+        const videoPlayer = document.getElementById('myVideo');
+
+        startBtn.addEventListener('click', () => {
+            startBtn.style.display = 'none';
+            videoPlayer.style.display = 'block';
+            
+            database.ref('currentVideo').on('value', (snapshot) => {
+                const newVideoFile = snapshot.val();
+                if (newVideoFile) {
+                
+                    videoPlayer.src = newVideoFile;
+                    videoPlayer.play();
+                }
+            });
+        });
+    </script>
+</body>
+</html>
