@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NFC Simulator</title>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+    <style>
+        body { font-family: sans-serif; text-align: center; padding: 20px; background: #000; color: white; }
+        button { display: block; width: 80%; margin: 20px auto; padding: 20px; font-size: 20px; cursor: pointer; border-radius: 8px; border: none; }
+        .btn-1 { background-color: #4CAF50; color: white; }
+        .btn-2 { background-color: #2196F3; color: white; }
+        .btn-3 { background-color: #f44336; color: white; }
+        #status { margin-top: 30px; font-style: italic; color: #aaa; }
+    </style>
+</head>
+<body>
+    <h1>Simulate NFC Scans</h1>
+    <p>Tap a button to pretend you scanned an object.</p>
+
+    <button class="btn-1" onclick="simulateScan('argentina.mp4')">Scan Object 1 (Argentina)</button>
+    <button class="btn-2" onclick="simulateScan('miami.mp4')">Scan Object 2 (Miami)</button>
+    <button class="btn-3" onclick="simulateScan('blank.mp4')">Clear/Stop Video</button>
+
+    <p id="status">Waiting for input...</p>
+
+    <script>
+        // PASTE YOUR FIREBASE CONFIG HERE
+        const firebaseConfig = {
+            apiKey: "YOUR_API_KEY",
+            authDomain: "YOUR_PROJECT.firebaseapp.com",
+            databaseURL: "https://YOUR_PROJECT-default-rtdb.firebaseio.com",
+            projectId: "YOUR_PROJECT"
+        };
+        firebase.initializeApp(firebaseConfig);
+        const database = firebase.database();
+
+        // This function does exactly what the URL reader did previously
+        function simulateScan(videoFileName) {
+            document.getElementById('status').innerText = "Sending signal...";
+            
+            database.ref('currentVideo').set(videoFileName)
+                .then(() => {
+                    document.getElementById('status').innerText = `Sent signal to play: ${videoFileName}`;
+                })
+                .catch((error) => {
+                    document.getElementById('status').innerText = "Error connecting to database.";
+                    console.error(error);
+                });
+        }
+    </script>
+</body>
+</html>
