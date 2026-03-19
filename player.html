@@ -8,18 +8,22 @@
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
     <style>
         body { margin: 0; background: black; overflow: hidden; display: flex; justify-content: center; align-items: center; height: 100vh; color: white; font-family: sans-serif;}
+        
+        /* Removed controls, so the video is just a pure canvas */
         video { width: 100%; height: 100%; object-fit: contain; display: none; }
-        #startBtn { padding: 20px 40px; font-size: 24px; cursor: pointer; }
+        
+        #startBtn { padding: 20px 40px; font-size: 24px; cursor: pointer; border-radius: 8px; border: none; background: white; color: black; }
     </style>
 </head>
 <body>
 
     <button id="startBtn">Start Projector Mode</button>
-    <video id="myVideo" controls></video>
+    
+    <video id="myVideo" loop></video>
 
     <script>
-        // Same FireBase configuration that I had for the reader
-  const firebaseConfig = {
+        // PASTE YOUR FIREBASE CONFIG HERE
+       const firebaseConfig = {
   apiKey: "AIzaSyCktc_PacSOjTOdLZQPefzNJUF4HW-fOCM",
   authDomain: "memory-objects.firebaseapp.com",
   projectId: "memory-objects",
@@ -34,15 +38,31 @@
         const videoPlayer = document.getElementById('myVideo');
 
         startBtn.addEventListener('click', () => {
+            // Hide the button and show the video
             startBtn.style.display = 'none';
             videoPlayer.style.display = 'block';
             
+            // Request Full Screen
+            if (videoPlayer.requestFullscreen) {
+                videoPlayer.requestFullscreen();
+            } else if (videoPlayer.webkitRequestFullscreen) { /* Safari */
+                videoPlayer.webkitRequestFullscreen();
+            } else if (videoPlayer.msRequestFullscreen) { /* IE11 */
+                videoPlayer.msRequestFullscreen();
+            }
+
+            // Listen to the database for live changes
             database.ref('currentVideo').on('value', (snapshot) => {
                 const newVideoFile = snapshot.val();
-                if (newVideoFile) {
                 
+                // If there's a file, and it's not the 'blank' clear command
+                if (newVideoFile && newVideoFile !== 'blank.mp4') {
                     videoPlayer.src = newVideoFile;
-                    videoPlayer.play();
+                    videoPlayer.play().catch(e => console.log("Waiting for user interaction to play audio/video."));
+                } else {
+                    // If they scan the 'clear' tag, stop the video and clear the screen
+                    videoPlayer.pause();
+                    videoPlayer.src = ""; 
                 }
             });
         });
