@@ -19,8 +19,8 @@
     <h1>Simulate NFC Scans</h1>
     <p>Tap a button to pretend you scanned an object.</p>
 
-    <button class="btn-1" onclick="simulateScan('argentina.mp4')">Scan Object 1 (Argentina)</button>
-    <button class="btn-2" onclick="simulateScan('miami.mp4')">Scan Object 2 (Miami)</button>
+    <button class="btn-1" onclick="simulateScan('yoshi.mp4')">Scan Object 1 (Argentina)</button>
+    <button class="btn-2" onclick="simulateScan('chick.mp4')">Scan Object 2 (Miami)</button>
     <button class="btn-3" onclick="simulateScan('blank.mp4')">Clear/Stop Video</button>
 
     <p id="status">Waiting for input...</p>
@@ -30,6 +30,7 @@
     const firebaseConfig = {
   apiKey: "AIzaSyCktc_PacSOjTOdLZQPefzNJUF4HW-fOCM",
   authDomain: "memory-objects.firebaseapp.com",
+  databaseURL: "https://memory-objects-default-rtdb.asia-southeast1.firebasedatabase.app",
   projectId: "memory-objects",
   storageBucket: "memory-objects.firebasestorage.app",
   messagingSenderId: "746130382440",
