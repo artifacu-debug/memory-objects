@@ -57,7 +57,7 @@
                 const newVideoFile = snapshot.val();
                 
                 // CHANGED: Now looks for 'blank.mov' to clear the screen
-                if (newVideoFile && newVideoFile !== 'blank.mov') {
+                if (newVideoFile && newVideoFile !== 'blank.mp4') {
                     videoPlayer.src = newVideoFile;
                     videoPlayer.play().catch(e => console.log("Waiting for user interaction to play audio/video."));
                 } else {
