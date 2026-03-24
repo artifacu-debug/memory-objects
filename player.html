@@ -23,15 +23,15 @@
 
     <script>
         // PASTE YOUR FIREBASE CONFIG HERE
-       const firebaseConfig = {
-  apiKey: "AIzaSyCktc_PacSOjTOdLZQPefzNJUF4HW-fOCM",
-  authDomain: "memory-objects.firebaseapp.com",
-  databaseURL: "https://memory-objects-default-rtdb.asia-southeast1.firebasedatabase.app",
-  projectId: "memory-objects",
-  storageBucket: "memory-objects.firebasestorage.app",
-  messagingSenderId: "746130382440",
-  appId: "1:746130382440:web:7927bbe13b9767c8ee65dd"
-};
+        const firebaseConfig = {
+            apiKey: "AIzaSyCktc_PacSOjTOdLZQPefzNJUF4HW-fOCM",
+            authDomain: "memory-objects.firebaseapp.com",
+            databaseURL: "https://memory-objects-default-rtdb.asia-southeast1.firebasedatabase.app",
+            projectId: "memory-objects",
+            storageBucket: "memory-objects.firebasestorage.app",
+            messagingSenderId: "746130382440",
+            appId: "1:746130382440:web:7927bbe13b9767c8ee65dd"
+        };
         firebase.initializeApp(firebaseConfig);
         const database = firebase.database();
 
@@ -56,8 +56,8 @@
             database.ref('currentVideo').on('value', (snapshot) => {
                 const newVideoFile = snapshot.val();
                 
-                // If there's a file, and it's not the 'blank' clear command
-                if (newVideoFile && newVideoFile !== 'blank.mp4') {
+                // CHANGED: Now looks for 'blank.mov' to clear the screen
+                if (newVideoFile && newVideoFile !== 'blank.mov') {
                     videoPlayer.src = newVideoFile;
                     videoPlayer.play().catch(e => console.log("Waiting for user interaction to play audio/video."));
                 } else {
